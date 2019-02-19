@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Shifts;
+use App\Shift;
 
 class ShiftController extends Controller
 {

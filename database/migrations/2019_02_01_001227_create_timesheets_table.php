@@ -16,9 +16,10 @@ class CreateTimesheetsTable extends Migration
         Schema::create('timesheets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('userId');
-            $table->time('startDate');
+            $table->date('startDate');
             $table->boolean('submitted');
             $table->integer('total');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

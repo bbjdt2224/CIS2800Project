@@ -20,6 +20,7 @@ class CreateShiftsTable extends Migration
             $table->integer('timesheetId');
             $table->text('description');
             $table->double('total', 3, 2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

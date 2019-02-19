@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App;
 
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class shift extends Controller
+class Shift extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'start', 'end', 'timesheetId', 'description', 'total',
     ];

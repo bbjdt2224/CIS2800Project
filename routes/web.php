@@ -7,12 +7,15 @@ Route::get('/', function () {
 
 Route::get('/employee/home', 'UserController@employeeHome')->name('employeeHome');
 
+Route::post('/employee/new-shift', 'UserController@createShift')->name('newShift');
+
+Route::post('/employee/edit-shift', 'UserController@editShift')->name('editShift');
+
+Route::post('/employee/past-timesheet', 'UserController@pastTimesheet')->name('pastTimesheet');
+
 Route::get('/login', 'AuthenticationController@login')->name('login');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

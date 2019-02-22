@@ -10,6 +10,6 @@ class Shift extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'start', 'end', 'timesheetId', 'description', 'total',
+        'date', 'start', 'end', 'timesheetId', 'description', 'total',
     ];
 }

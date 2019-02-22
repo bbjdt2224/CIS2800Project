@@ -13,6 +13,8 @@ Route::post('/employee/edit-shift', 'UserController@editShift')->name('editShift
 
 Route::post('/employee/past-timesheet', 'UserController@pastTimesheet')->name('pastTimesheet');
 
+Route::get('admin/home', 'AdminController@adminHome')->name('adminHome');
+
 Route::get('/login', 'AuthenticationController@login')->name('login');
 
 Auth::routes();

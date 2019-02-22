@@ -87,9 +87,4 @@ class UserController extends Controller
         Shift::find($id)->update(['start'=> $start, 'end' => $end]);
         return back();
     }
-
-    public function adminHome() {
-        
-        return view('admin.home');
-    }
 }

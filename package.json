@@ -14,8 +14,16 @@
         "bootstrap-sass": "^3.3.7",
         "cross-env": "^5.0.1",
         "jquery": "^3.1.1",
-        "laravel-mix": "^1.0",
-        "lodash": "^4.17.4",
-        "vue": "^2.1.10"
+        "laravel-mix": "^4.0.14",
+        "lodash": "^4.17.11",
+        "resolve-url-loader": "^2.3.1",
+        "sass": "^1.17.0",
+        "sass-loader": "^7.1.0",
+        "vue": "^2.1.10",
+        "vue-template-compiler": "^2.6.6"
+    },
+    "dependencies": {
+        "node": "^11.10.0",
+        "npm": "^6.8.0"
     }
 }

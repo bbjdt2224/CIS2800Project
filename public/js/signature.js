@@ -81,66 +81,45 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ "./resources/assets/js/app.js":
-/*!************************************!*\
-  !*** ./resources/assets/js/app.js ***!
-  \************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-
-
-/***/ }),
-
-/***/ "./resources/assets/sass/app.scss":
-/*!****************************************!*\
-  !*** ./resources/assets/sass/app.scss ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "./resources/assets/sass/spacing.scss":
-/*!********************************************!*\
-  !*** ./resources/assets/sass/spacing.scss ***!
-  \********************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-
-/***/ "./resources/assets/sass/style.scss":
+/***/ "./resources/assets/js/signature.js":
 /*!******************************************!*\
-  !*** ./resources/assets/sass/style.scss ***!
+  !*** ./resources/assets/js/signature.js ***!
   \******************************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+/* Implement the signature functionality. Takes three DOM elements as 
+ * arguments. Copied from email*/
+function signature() {
+  var signaturePad = new SignaturePad($('#signature').get(0), {
+    backgroundColor: '#ffffff',
+    penColor: '#000000'
+  });
+  $('#submit').get(0).addEventListener('click', function (event) {
+    var dataUrl = signaturePad.toDataURL('image/jpeg');
+    $('#signature-input').attr('value', dataUrl);
+  });
+  $('#clear-signature').get(0).addEventListener('click', function (event) {
+    event.preventDefault();
+    signaturePad.clear();
+  });
+}
 
 /***/ }),
 
-/***/ 0:
-/*!***************************************************************************************************************************************************!*\
-  !*** multi ./resources/assets/js/app.js ./resources/assets/sass/app.scss ./resources/assets/sass/style.scss ./resources/assets/sass/spacing.scss ***!
-  \***************************************************************************************************************************************************/
+/***/ 1:
+/*!************************************************!*\
+  !*** multi ./resources/assets/js/signature.js ***!
+  \************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\xampp\htdocs\2800\Project\resources\assets\js\app.js */"./resources/assets/js/app.js");
-__webpack_require__(/*! C:\xampp\htdocs\2800\Project\resources\assets\sass\app.scss */"./resources/assets/sass/app.scss");
-__webpack_require__(/*! C:\xampp\htdocs\2800\Project\resources\assets\sass\style.scss */"./resources/assets/sass/style.scss");
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\2800\Project\resources\assets\sass\spacing.scss */"./resources/assets/sass/spacing.scss");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\2800\Project\resources\assets\js\signature.js */"./resources/assets/js/signature.js");
 
 
 /***/ })

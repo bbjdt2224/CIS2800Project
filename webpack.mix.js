@@ -16,6 +16,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
 
 mix.js('resources/assets/js/signature.js', 'public/js');
 
-mix.js('resources/assets/js/totals.js', 'public/js');
+mix.js('resources/assets/js/validators.js', 'public/js');
 
 mix.sass('resources/assets/sass/style.scss', 'public/css');
+
+mix.sass('resources/assets/sass/spacing.scss', 'public/css');

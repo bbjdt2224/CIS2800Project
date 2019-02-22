@@ -15,10 +15,11 @@ class CreateShiftsTable extends Migration
     {
         Schema::create('shifts', function (Blueprint $table) {
             $table->increments('id');
+            $table->date('date');
             $table->time('start');
             $table->time('end');
             $table->integer('timesheetId');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->double('total', 3, 2);
             $table->softDeletes();
             $table->timestamps();

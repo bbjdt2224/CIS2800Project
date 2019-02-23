@@ -38,7 +38,7 @@ class UserController extends Controller
                 'total' => 0
             ]);
         }
-        return view('employee.home', compact('date', 'timesheet'));
+        return view('employee.home', compact('timesheet'));
     }
 
     public function pastTimesheet() {
@@ -67,6 +67,11 @@ class UserController extends Controller
         $hours = date('g', $diff);
         $min = date('i', $diff)/60;
         $total = $hours + $min;
+        $timesheetId = request('timesheetId');
+
+        $timesheet = Timesheet::find($timesheetId);
+        $timesheet->total += $total;
+        $timesheet->save();
 
 
         Shift::create([
@@ -84,7 +89,42 @@ class UserController extends Controller
         $id = request('shiftId');
         $start = request('shiftStart');
         $end = request('shiftEnd');
-        Shift::find($id)->update(['start'=> $start, 'end' => $end]);
+        $diff = strtotime($end) - strtotime($start);
+        $hours = date('g', $diff);
+        $min = date('i', $diff)/60;
+        $total = $hours + $min;
+        $shift = Shift::find($id);
+        $timesheet = Timesheet::find($shift->timesheetId);
+        $timesheet->total -= $shift->total;
+        $timesheet->total += $total;
+        $timesheet->save();
+        $shift->update(['start'=> $start, 'end' => $end, 'total'=> $total]);
         return back();
+    }
+
+    public function deleteShift(){
+        $id = request('shiftId');
+        $shift = Shift::find($id);
+        $timesheet = Timesheet::find($shift->timesheetId);
+        $timesheet->total -= $shift->total;
+        $timesheet->save();
+        $shift->delete();
+        return back();
+    }
+
+    public function sign(){
+        $timesheetId = request('timesheetId');
+        $total = request('total');
+        return view('employee.signature', compact('timesheetId', 'total'));
+    }
+
+    public function submitTimesheet() {
+        $timesheetId = request('timesheetId');
+        $signature = request('signature');
+        $timesheet = Timesheet::find($timesheetId);
+        $timesheet->submitted = 1;
+        $timesheet->signature = $signature;
+        $timesheet->save();
+        return redirect('employee/home');
     }
 }

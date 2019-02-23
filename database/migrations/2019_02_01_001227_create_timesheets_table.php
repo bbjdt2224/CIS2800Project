@@ -18,7 +18,8 @@ class CreateTimesheetsTable extends Migration
             $table->integer('userId');
             $table->date('startDate');
             $table->boolean('submitted');
-            $table->integer('total');
+            $table->double('total', 5, 2);
+            $table->binary('signature')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

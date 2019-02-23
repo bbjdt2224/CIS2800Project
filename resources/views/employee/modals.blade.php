@@ -1,7 +1,7 @@
 <div id="{{$shift->id}}" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="{{route('editShift')}}">
+            <form method="post" action="{{route('editShift')}}" onsubmit="return validateForm(this)">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Edit Shift</h4>
@@ -36,7 +36,7 @@
 <div id="delete{{$shift->id}}" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="{{route('deleteShift')}}">
+            <form method="post" action="{{route('deleteShift')}}" onsubmit="return validateForm(this)">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Delete Shift</h4>

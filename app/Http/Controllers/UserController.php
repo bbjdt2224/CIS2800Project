@@ -114,8 +114,7 @@ class UserController extends Controller
 
     public function sign(){
         $timesheetId = request('timesheetId');
-        $total = request('total');
-        return view('employee.signature', compact('timesheetId', 'total'));
+        return view('employee.signature', compact('timesheetId'));
     }
 
     public function submitTimesheet() {

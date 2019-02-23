@@ -4,7 +4,7 @@
 <div id="{{$dateId}}" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="post" action="{{route('newShift')}}">
+            <form method="post" action="{{route('newShift')}}" onsubmit="return validateForm(this)">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">New Shift</h4>

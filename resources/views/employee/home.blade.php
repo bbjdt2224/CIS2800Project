@@ -181,4 +181,6 @@
             </div>
         @endif
     </div>
+
+    <script src="{{asset('js/validation.js')}}"></script>
 @endsection

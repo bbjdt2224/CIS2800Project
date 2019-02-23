@@ -6,12 +6,18 @@
         $w2Total = 0;
         
         if ($timesheet != null) {
-            $date = $timesheet->startDate;
+            $startDate = $timesheet->startDate;
         }
         function getDateOffset($date, $offset) {
             $date = strtotime($date) + ($offset * 86400);
             return date('m/d/y', $date);
         }
+
+        function getDateId($date, $offset) {
+            $date = getDateOffset($date, $offset);
+            return str_replace('/', '', $date);
+        }
+
         function findShifts($date, $shifts){
             if (isset($shifts)) {
                 $sArray = [];
@@ -27,6 +33,20 @@
         function getShiftTimes($shift) {
             return date('g:i a', strtotime($shift->start)).' - '.date('g:i a', strtotime($shift->end));
         }
+        function compareShifts($a, $b) {
+            return strcmp($a->start, $b->start);
+        }
+        function isEditable($timesheet){
+            $date = date('W', time());
+            if($date%2 != 1){
+                $date = $date -1;
+            }
+            $date = date('Y-m-d', strtotime(date('Y')."W".sprintf("%02d", $date)."1"));
+            if($timesheet->submitted == 0 && $date == $timesheet->startDate) {
+                return true;
+            }
+            return false;
+        }
     ?>
     <div class="container">
         @if(isset($timesheet))
@@ -38,44 +58,13 @@
                     </div>
                     <button type="submit" class="btn btn-success">Change Date</button>
                 </form>
-                <button class="btn btn-success" data-toggle="modal" data-target="#newShift">New Shift</button>
-                <div id="newShift" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form method="post" action="{{route('newShift')}}" onsubmit="return nsIsValid()">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">New Shift</h4>
-                                </div>
-                                <div class="modal-body">
-                                    {{ csrf_field()}}
-                                    <span class="text-danger" id="nsError"></span>
-                                    <input type="hidden" name="timesheetId" value="{{$timesheet->id}}">
-                                    <div class="form-group" id="nsDate">
-                                        <label class="form-label">Date: </label><br>
-                                        <input class="form-control" type="date" name="shiftDate" oninput="validateDateInput(this.value, '{{$timesheet->startDate}}')">
-                                    </div>
-                                    <div class="form-group" id="nsStart">
-                                        <label class="form-label">Start Time: </label>
-                                        <input class="form-control" type="time" name="shiftStart" oninput="startIsValid(this.value)">
-                                    </div>
-                                    <div class="form-group" id="nsEnd">
-                                        <label class="form-label">End Time: </label>
-                                        <input class="form-control" type="time" name="shiftEnd" oninput="endIsValid(this.value)">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Description: </label>
-                                        <textarea class="form-control" name="description"></textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success disabled" id="submitNewShift">Save</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+                @if(isEditable($timesheet))
+                    <form method="post" action="{{route('sign')}}">
+                        {{ csrf_field()}}
+                        <input type="hidden" value="{{$timesheet->id}}" name="timesheetId">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                    </form>
+                @endif
             </div>
             <table class="table">
                 <thead>
@@ -91,7 +80,7 @@
                 <tbody>
                     <tr class="active">
                         @for($i = 0; $i < 7; $i ++)
-                            <td class="center">{{getDateOffset($date, $i)}}</td>
+                            <td class="center">{{getDateOffset($startDate, $i)}}</td>
                         @endfor
                         <td></td>
                     </tr>
@@ -99,7 +88,8 @@
                         @for($i = 0; $i < 7; $i ++)
                             <?php
                                 if (isset($shifts)){
-                                    $sArray = findShifts(getDateOffset($date, $i), $shifts);
+                                    $sArray = findShifts(getDateOffset($startDate, $i), $shifts);
+                                    usort($sArray, "compareShifts");
                                     if (isset($sArray)) {
                                         foreach($sArray as $s){
                                             $w1Total += $s->total;
@@ -110,44 +100,22 @@
                             <td class="center">
                                 @if(isset($sArray))
                                     @foreach($sArray as $s)
-                                        <button class="btn btn-info height-margin-1" data-toggle="modal" data-target="#{{$s->id}}">
-                                            {{getShiftTimes($s)}}
-                                        </button>
-                                        <div id="{{$s->id}}" class="modal fade" role="dialog">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <form method="post" action="{{route('editShift')}}">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">Edit Shift</h4>
-                                                        </div>
-                                                        <div class="modal-body left">
-                                                            {{ csrf_field()}}
-                                                            <input type="hidden" name="shiftId" value="{{$s->id}}">
-                                                            <input type="hidden" name="date" value="{{$s->date}}">
-                                                            <div class="form-group" id="esStart">
-                                                                <label class="form-label">Start Time: </label>
-                                                                <input class="form-control" type="time" name="shiftStart" value="{{$s->start}}">
-                                                            </div>
-                                                            <div class="form-group" id="esEnd">
-                                                                <label class="form-label">End Time: </label>
-                                                                <input class="form-control" type="time" name="shiftEnd" value="{{$s->end}}">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="form-label">Description: </label>
-                                                                <textarea class="form-control" name="description">{{$s->description}}</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-success">Save</button>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
+                                        @if(isEditable($timesheet))
+                                            <button class="btn btn-info height-margin-1" data-toggle="modal" data-target="#{{$s->id}}">
+                                                {{getShiftTimes($s)}}
+                                            </button>
+                                            @include('employee.modals', [$shift = $s])
+                                            <br>
+                                        @else
+                                            <span class="shiftText">{{getShiftTimes($s)}}</span>
+                                        @endif
                                     @endforeach
+                                @endif
+                                @if(isEditable($timesheet) && (isset($sArray) && count($sArray) < 3))
+                                    <button class="btn btn-primary height-margin-1" data-toggle="modal" data-target="#{{getDateId($startDate, $i)}}">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                    @include('employee.new-shift', [$dateId = getDateId($startDate, $i), $date = getDateOffset($startDate, $i)])
                                 @endif
                             </td>
                         @endfor
@@ -155,7 +123,7 @@
                     </tr>
                     <tr class="active">
                         @for($i = 7; $i < 14; $i ++)
-                            <td class="center">{{getDateOffset($date, $i)}}</td>
+                            <td class="center">{{getDateOffset($startDate, $i)}}</td>
                         @endfor
                         <td class="center"></td>
                     </tr>
@@ -163,7 +131,7 @@
                         @for($i = 7; $i < 14; $i ++)
                             <?php
                                 if (isset($shifts)){
-                                    $sArray = findShifts(getDateOffset($date, $i), $shifts);
+                                    $sArray = findShifts(getDateOffset($startDate, $i), $shifts);
                                     if (isset($sArray)) {
                                         foreach($sArray as $s){
                                             $w2Total += $s->total;
@@ -174,44 +142,22 @@
                             <td class="center">
                                 @if(isset($s))
                                     @foreach($sArray as $s)
-                                        <button class="btn btn-info height-margin-1" data-toggle="modal" data-target="#{{$s->id}}">
-                                            {{getShiftTimes($s)}}
-                                        </button>
-                                        <div id="{{$s->id}}" class="modal fade" role="dialog">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <form method="post" action="{{route('editShift')}}">
-                                                        <div class="modal-header">
-                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                                            <h4 class="modal-title">Edit Shift</h4>
-                                                        </div>
-                                                        <div class="modal-body left">
-                                                            {{ csrf_field()}}
-                                                            <input type="hidden" name="shiftId" value="{{$s->id}}">
-                                                            <input type="hidden" name="date" value="{{$s->date}}">
-                                                            <div class="form-group" id="esStart">
-                                                                <label class="form-label">Start Time: </label>
-                                                                <input class="form-control" type="time" name="shiftStart" value="{{$s->start}}">
-                                                            </div>
-                                                            <div class="form-group" id="esEnd">
-                                                                <label class="form-label">End Time: </label>
-                                                                <input class="form-control" type="time" name="shiftEnd" value="{{$s->end}}">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="form-label">Description: </label>
-                                                                <textarea class="form-control" name="description">{{$s->description}}</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="submit" class="btn btn-success">Save</button>
-                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br>
+                                        @if(isEditable($timesheet))
+                                            <button class="btn btn-info height-margin-1" data-toggle="modal" data-target="#{{$s->id}}">
+                                                {{getShiftTimes($s)}}
+                                            </button>
+                                            @include('employee.modals', [$shift = $s])
+                                            <br>
+                                        @else
+                                            <span class="shiftText">{{getShiftTimes($s)}}</span>
+                                        @endif
                                     @endforeach
+                                @endif
+                                @if(isEditable($timesheet) && (isset($sArray) && count($sArray) < 3))
+                                    <button class="btn btn-primary height-margin-1" data-toggle="modal" data-target="#{{getDateId($date, $i)}}">
+                                        <span class="glyphicon glyphicon-plus"></span>
+                                    </button>
+                                    @include('employee.new-shift', [$dateId = getDateId($date, $i), $date = getDateOffset($startDate, $i)])
                                 @endif
                             </td>
                         @endfor
@@ -236,5 +182,5 @@
         @endif
     </div>
 
-    <script src={{asset('js/validators.js')}}></script>
+    <script src="{{asset('js/validation.js')}}"></script>
 @endsection

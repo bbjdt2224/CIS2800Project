@@ -15,3 +15,14 @@
     display: flex;
     flex-direction: column;
 }
+
+.timesheet-headers{
+    display: flex;
+    justify-content: flex-start;
+}
+
+.timesheet-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+}

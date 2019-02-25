@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTimesheetsTable extends Migration
+class CreateHeadersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateTimesheetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('timesheets', function (Blueprint $table) {
+        Schema::create('headers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('userId');
-            $table->date('startDate');
-            $table->boolean('submitted');
-            $table->double('total', 5, 2);
-            $table->binary('signature')->nullable();
-            $table->binary('adminSignature')->nullable();
+            $table->string('header');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -33,6 +29,6 @@ class CreateTimesheetsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('timesheets');
+        Schema::dropIfExists('headers');
     }
 }

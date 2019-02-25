@@ -21,6 +21,8 @@ Route::post('/employee/past-timesheet', 'UserController@pastTimesheet')->name('p
 
 Route::get('admin/home', 'AdminController@adminHome')->name('adminHome');
 
+Route::get('admin/timesheet/{userId}', 'AdminController@viewTimesheet')->name('viewTimesheet');
+
 Route::get('/login', 'AuthenticationController@login')->name('login');
 
 Auth::routes();

@@ -10,7 +10,7 @@ class Timesheet extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'userId', 'startDate', 'submitted', 'total',
+        'userId', 'startDate', 'submitted', 'total', 'signature', 'adminSignature', 
     ];
 
     protected $dates = ['deleted_at'];

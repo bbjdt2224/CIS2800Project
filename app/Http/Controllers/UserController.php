@@ -120,10 +120,7 @@ class UserController extends Controller
     public function submitTimesheet() {
         $timesheetId = request('timesheetId');
         $signature = request('signature');
-        $timesheet = Timesheet::find($timesheetId);
-        $timesheet->submitted = 1;
-        $timesheet->signature = $signature;
-        $timesheet->save();
+        Timesheet::find($timesheetId)->update(['submitted'=>'1', 'signature'=>$signature]);
         return redirect('employee/home');
     }
 }

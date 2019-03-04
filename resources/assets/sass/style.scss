@@ -23,6 +23,12 @@
 
 .timesheet-buttons {
     display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.center-page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

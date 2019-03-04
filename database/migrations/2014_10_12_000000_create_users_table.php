@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('role')->default('employee');
             $table->integer('organizationId');
+            $table->integer('latestTimesheetId')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

@@ -44,10 +44,39 @@
         function getEndTime($shift) {
             return date('g:i a', strtotime($shift->end));
         }
+
+        function getIndex($user, $userList) {
+            for($i = 0; $i < count($userList); $i ++) {
+                if ($user->id == $userList[$i]->userId){
+                    return $i + 1;
+                }
+            }
+            return 0;
+        }
+
+        function getTimesheetId($user, $userList){
+            return $userList[$user]->id;
+        }
+
+        $userIndex = getIndex($user, $userList);
+
     ?>
     <div class="container-fluid" id="printPage">
         <div class="timesheet-buttons">
-            <a href="{{route('viewTimesheet', ['userId' => $user->id])}}"><button class="btn btn-primary width-margin-1" onclick="removeButtons(); window.print();" id="printButton">Print</button></a>
+            <a href="{{route('adminHome')}}" class="btn btn-primary" id="backButton">Employees</a>
+            <div id="buttons">
+                @if($timesheet->status == 'submitted')
+                    <button class="btn btn-success width-margin-1" onclick="document.getElementById('approveForm').submit()">Approve</button>
+                    <button class="btn btn-danger width-margin-1" data-toggle="modal" data-target="#rejectModal">Reject</button>
+                @elseif($timesheet->status == 'approved')
+                    <span class="text-success"><span class="glyphicon glyphicon-ok"></span>  Approved</span>
+                @elseif($timesheet->status == 'rejected')
+                    <span class="text-danger"><span class="glyphicon glyphicon-warning-sign"></span>  Rejected</span>
+                @else
+                    <span class="text-warning"><span class="glyphicon glyphicon-refresh"></span>  In Progress</span>
+                @endif
+                <a href="{{route('viewTimesheet', ['timesheetId' => $timesheet->id])}}" class="btn btn-primary width-margin-1" onclick="removeButtons(); window.print();" >Print</a>
+            </div>
         </div>
         <div class="timesheet-headers">
             <h4 class="width-margin-2">{{$user->name}}</h4>
@@ -65,6 +94,7 @@
                 <th>Afternoon End</th>
                 <th>Evening Begin</th>
                 <th>Evening End</th>
+                <th></th>
                 <th>Total</th>
             </thead>
             <tbody class="center">
@@ -101,11 +131,12 @@
                             <td></td>
                             <td></td>
                         @endif
+                        <td></td>
                         <td>{{$total}}</td>
                     </tr>   
                 @endfor
                 <tr>
-                    <td colspan="7"></td>
+                    <td colspan="8"></td>
                     <td>Week 1 Total</td>
                     <td>{{$w1Total}}</td>
                 </tr>
@@ -142,16 +173,17 @@
                             <td></td>
                             <td></td>
                         @endif
+                        <td></td>
                         <td>{{$total}}</td>
                     </tr>   
                 @endfor
                 <tr>
-                    <td colspan="7"></td>
+                    <td colspan="8"></td>
                     <td>Week 2 Total</td>
                     <td>{{$w2Total}}</td>
                 </tr>
                 <tr>
-                    <td colspan="7"></td>
+                    <td colspan="8"></td>
                     <td>Total</td>
                     <td>{{$w1Total + $w2Total}}</td>
                 </tr>
@@ -162,6 +194,47 @@
         @else
            <h1>Unsubmitted</h1>
         @endif
+
+        <div class="center-page" id="quickNav">
+            @if($userIndex <= 1)
+                <a class="btn btn-primary disabled">Previous</a>
+            @else
+                <a href="{{route('viewTimesheet', ['timesheetId' => getTimesheetId(($userIndex-2), $userList)])}}" class="btn btn-primary">Previous</a>
+            @endif
+            <span class="width-margin-2">{{$userIndex}} of {{count($userList)}}</span>
+            @if($userIndex >= count($userList))
+                <a class="btn btn-primary disabled">Next</a>
+            @else
+                <a href="{{route('viewTimesheet', ['timesheetId' => getTimesheetId(($userIndex), $userList)])}}" class="btn btn-primary">Next</a>
+            @endif
+    </div>
+
+    <form method="post" action="{{route('approveTimesheet')}}" id="approveForm">
+        {{ csrf_field()}}
+        <input type="hidden" name="timesheetId" value="{{$timesheet->id}}">
+    </form>
+
+    <div id="rejectModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" action="{{route('rejectTimesheet')}}" onsubmit="return validateForm(this)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Reject Timesheet</h4>
+                    </div>
+                    <div class="modal-body left">
+                        {{ csrf_field()}}
+                        <input type="hidden" name="timesheetId" value="{{$timesheet->id}}">
+                        <h3>Why is this rejected?</h3>
+                        <textarea class="form-control" name="notes" rows="5"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Reject</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="{{asset('js/helpers.js')}}"></script>

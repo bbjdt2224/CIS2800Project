@@ -22,5 +22,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'role' => $faker->randomElement($array = array ('employee', 'admin')),
         'organizationId' => $faker->randomElement($array = array ('1', '2', '3', '4', '5')),
         'remember_token' => str_random(10),
+        'latestTimesheetId' => $faker->randomDigitNotNull,
     ];
 });

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Timesheet;
 use App\Shift;
+use App\User;
 
 class UserController extends Controller
 {
@@ -34,9 +35,10 @@ class UserController extends Controller
             $timesheet = Timesheet::create([
                 'userId' => Auth::id(),
                 'startDate' => $date,
-                'submitted' => 0,
+                'status' => 'progress',
                 'total' => 0
             ]);
+            User::find(Auth::id())->update(['latestTimesheetId'=>$timesheet->id]);
         }
         return view('employee.home', compact('timesheet'));
     }
@@ -120,7 +122,7 @@ class UserController extends Controller
     public function submitTimesheet() {
         $timesheetId = request('timesheetId');
         $signature = request('signature');
-        Timesheet::find($timesheetId)->update(['submitted'=>'1', 'signature'=>$signature]);
+        Timesheet::find($timesheetId)->update(['status'=>'submitted', 'signature'=>$signature]);
         return redirect('employee/home');
     }
 }

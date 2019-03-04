@@ -19,6 +19,6 @@ $factory->define(App\Timesheet::class, function (Faker $faker) {
         },
         'startDate' => $date,
         'total' => $faker->randomDigitNotNull,
-        'submitted' => $faker->randomElement($array = array ('0','1')),
+        'status' => $faker->randomElement($array = array ('approved','submitted', 'progress', 'rejected')),
     ];
 });

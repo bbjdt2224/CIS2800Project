@@ -42,7 +42,7 @@
                 $date = $date -1;
             }
             $date = date('Y-m-d', strtotime(date('Y')."W".sprintf("%02d", $date)."1"));
-            if($timesheet->submitted == 0 && $date == $timesheet->startDate) {
+            if($timesheet->status == 'progress' && $date == $timesheet->startDate) {
                 return true;
             }
             return false;

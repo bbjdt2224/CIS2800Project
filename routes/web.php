@@ -21,7 +21,11 @@ Route::post('/employee/past-timesheet', 'UserController@pastTimesheet')->name('p
 
 Route::get('admin/home', 'AdminController@adminHome')->name('adminHome');
 
-Route::get('admin/timesheet/{userId}', 'AdminController@viewTimesheet')->name('viewTimesheet');
+Route::get('admin/timesheet/{timesheetId}', 'AdminController@viewTimesheet')->name('viewTimesheet');
+
+Route::post('admin/timesheet/approve', 'AdminController@approveTimesheet')->name('approveTimesheet');
+
+Route::post('admin/timesheet/reject', 'AdminController@rejectTimesheet')->name('rejectTimesheet');
 
 Route::get('/login', 'AuthenticationController@login')->name('login');
 

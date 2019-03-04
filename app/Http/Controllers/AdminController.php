@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Timesheet;
 use App\User;
@@ -18,8 +19,20 @@ class AdminController extends Controller
     }
 
     public function adminHome() {
+
+        $date = date('W', time());
+        if($date%2 != 1){
+            $date = $date -1;
+        }
+        $date = date('Y-m-d', strtotime(date('Y')."W".sprintf("%02d", $date)."1"));
+
+        $users = User::leftJoin('timesheets', 'users.latestTimesheetId', '=', 'timesheets.id')
+        ->where('users.organizationId', '=', Auth::user()->organizationId)
+        ->orderby('users.name')
+        ->groupBy('timesheets.userId')
+        ->get();
         
-        return view('admin.home');
+        return view('admin.home', compact('users'));
     }
 
     public function viewTimesheet($id) {
@@ -30,14 +43,36 @@ class AdminController extends Controller
         }
         $date = date('Y-m-d', strtotime(date('Y')."W".sprintf("%02d", $date)."1"));
 
-        $user = User::find($id);
+        $timesheet = Timesheet::find($id);
 
-        $headers = Header::where('userId', '=', $id)->get();
+        $user = User::find($timesheet->userId);
 
-        $timesheet = Timesheet::where('userId', '=', $id)->where('startdate', '=', $date)->first();
+        $headers = Header::where('userId', '=', $timesheet->userId)->get();
 
         $shifts = Shift::where('timesheetId', '=', $timesheet->id)->get();
 
-        return view('admin.timesheet', compact('user', 'headers', 'timesheet', 'shifts'));
+        $userList = User::leftJoin('timesheets', 'users.latestTimesheetId', '=', 'timesheets.id')
+        ->where('users.organizationId', '=', Auth::user()->organizationId)
+        ->where('timesheets.startdate', '=', $date)
+        ->orderby('users.name')
+        ->get();
+
+        return view('admin.timesheet', compact('user', 'headers', 'timesheet', 'shifts', 'userList'));
+    }
+
+    public function approveTimesheet() {
+        $id = request('timesheetId');
+        Timesheet::find($id)->update(['status'=>'approved']);
+        return back();
+    }
+
+    public function rejectTimesheet() {
+        $id = request('timesheetId');
+        $notes = request('notes');
+        Timesheet::find($id)->update([
+            'status'=>'rejected',
+            'notes'=>$notes
+        ]);
+        return back();
     }
 }

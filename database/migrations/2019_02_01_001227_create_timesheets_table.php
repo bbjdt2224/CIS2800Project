@@ -17,7 +17,8 @@ class CreateTimesheetsTable extends Migration
             $table->increments('id');
             $table->integer('userId');
             $table->date('startDate');
-            $table->boolean('submitted');
+            $table->string('status');
+            $table->string('notes');
             $table->double('total', 5, 2);
             $table->binary('signature')->nullable();
             $table->binary('adminSignature')->nullable();

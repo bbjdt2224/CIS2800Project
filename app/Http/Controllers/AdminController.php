@@ -75,4 +75,34 @@ class AdminController extends Controller
         ]);
         return back();
     }
+
+    public function employees() {
+        $employees = User::where('organizationId', '=', Auth::user()->organizationId)
+        ->orderby('name')
+        ->get();
+
+        return view('admin.employees', compact('employees'));
+    }
+
+    public function editEmployee($employeeId) {
+        $employeeId = intval($employeeId);
+        $employee = User::find($employeeId);
+
+        return view('admin.edit-employee', compact('employee'));
+    }
+
+    public function edit() {
+        $id = request('employeeId');
+        User::find($id)->update([
+            'name' => request('name'),
+            'email' => request('email')
+        ]);
+        return redirect('admin/employees');
+    }
+
+    public function archiveEmployee(){
+        $id = request('employeeId');
+        User::find($id)->delete();
+        return redirect('admin/employees');
+    }
 }

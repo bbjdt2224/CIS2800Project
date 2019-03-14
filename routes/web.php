@@ -27,6 +27,14 @@ Route::post('admin/timesheet/approve', 'AdminController@approveTimesheet')->name
 
 Route::post('admin/timesheet/reject', 'AdminController@rejectTimesheet')->name('rejectTimesheet');
 
+Route::get('admin/employees', 'AdminController@employees')->name('employees');
+
+Route::get('admin/editEmployee/{employeeId}', 'AdminController@editEmployee')->name('editEmployee');
+
+Route::post('admin/editEmployee', 'AdminController@edit')->name('employeeEdit');
+
+Route::post('admin/archiveEmployee', 'AdminController@archiveEmployee')->name('archiveEmployee');
+
 Route::get('/login', 'AuthenticationController@login')->name('login');
 
 Auth::routes();

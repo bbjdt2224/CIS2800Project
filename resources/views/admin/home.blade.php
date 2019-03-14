@@ -10,6 +10,12 @@
 
     ?>
     <div class="container">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#">Current Timesheets</a></li>
+            <li><a href="{{route('employees')}}">Employees</a></li>
+            <li><a href="#">Archived Timesheets</a></li>
+            <li><a href="#">Archived Employees</a></li>
+        </ul>
         <table class="table">
             <thead>
                 <th>Name</th>

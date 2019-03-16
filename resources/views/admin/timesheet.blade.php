@@ -197,19 +197,6 @@
         @else
            <h1>Unsubmitted</h1>
         @endif
-
-        <div class="center-page" id="quickNav">
-            @if($userIndex <= 1)
-                <a class="btn btn-primary disabled">Previous</a>
-            @else
-                <a href="{{route('viewTimesheet', ['timesheetId' => getTimesheetId(($userIndex-2), $userList)])}}" class="btn btn-primary">Previous</a>
-            @endif
-            <span class="width-margin-2">{{$userIndex}} of {{count($userList)}}</span>
-            @if($userIndex >= count($userList))
-                <a class="btn btn-primary disabled">Next</a>
-            @else
-                <a href="{{route('viewTimesheet', ['timesheetId' => getTimesheetId(($userIndex), $userList)])}}" class="btn btn-primary">Next</a>
-            @endif
     </div>
 
     <form method="post" action="{{route('approveTimesheet')}}" id="approveForm">

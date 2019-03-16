@@ -106,6 +106,12 @@ class AdminController extends Controller
         return redirect('admin/employees');
     }
 
+    public function unarchiveEmployee() {
+        $id = request('employeeId');
+        User::withTrashed()->find($id)->restore();
+        return redirect('admin/archivedEmployees');
+    }
+
     public function viewArchivedTimesheets() {
         $type = request('type');
         $value = request('value');
@@ -147,5 +153,10 @@ class AdminController extends Controller
         $users = User::where('organizationId', '=', Auth::user()->organizationId)->get();
 
         return view('admin.archived-timesheets', compact('type', 'value', 'timesheets', 'users'));
+    }
+
+    function viewArchivedEmployees() {
+        $users = User::onlyTrashed()->where('organizationId', '=', Auth::user()->organizationId)->get();
+        return view('admin.archived-employees', compact('users'));
     }
 }

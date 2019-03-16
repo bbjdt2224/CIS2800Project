@@ -35,7 +35,11 @@ Route::post('admin/editEmployee', 'AdminController@edit')->name('employeeEdit');
 
 Route::post('admin/archiveEmployee', 'AdminController@archiveEmployee')->name('archiveEmployee');
 
+Route::post('admin/unarchiveEmployee', 'AdminController@unarchiveEmployee')->name('unarchiveEmployee');
+
 Route::get('admin/archivedTimesheets', 'AdminController@viewArchivedTimesheets')->name('archivedTimesheets');
+
+Route::get('admin/archivedEmployees', 'AdminController@viewArchivedEmployees')->name('archivedEmployees');
 
 Route::get('/login', 'AuthenticationController@login')->name('login');
 

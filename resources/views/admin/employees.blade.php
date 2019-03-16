@@ -14,14 +14,15 @@
             <li><a href="{{route('adminHome')}}">Current Timesheets</a></li>
             <li class="active"><a href="#">Employees</a></li>
             <li><a href="{{route('archivedTimesheets')}}">Archived Timesheets</a></li>
-            <li><a href="#">Archived Employees</a></li>
+            <li><a href="{{route('archivedEmployees')}}">Archived Employees</a></li>
         </ul>
         <ul class="list-group bottom-margin-10">
             @for($i = 0; $i < count($employees); $i ++)
                 <li class="list-group-item space-between">
-                    <a href="{{route('editEmployee', ['employeeId' => $employees[$i]->id])}}">
+                    <a class="min-width-300" href="{{route('editEmployee', ['employeeId' => $employees[$i]->id])}}">
                         <span>{{$employees[$i]->name}}</span>
                     </a>
+                    <span class="width-400">{{$employees[$i]->email}}</span>
                     <button class="btn btn-danger" onclick="document.getElementById('archive{{$i}}').submit();">Archive</button>
                 </li>
                 <form method="post" action="{{route('archiveEmployee')}}" id="archive{{$i}}">

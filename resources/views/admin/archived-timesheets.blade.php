@@ -11,7 +11,7 @@
             <li><a href="{{route('adminHome')}}">Current Timesheets</a></li>
             <li><a href="{{route('employees')}}">Employees</a></li>
             <li class="active"><a href="#">Archived Timesheets</a></li>
-            <li><a href="#">Archived Employees</a></li>
+            <li><a href="{{route('archivedEmployees')}}">Archived Employees</a></li>
         </ul>
         <div class="space-between top-margin-1">
             @if($type == 'Date')

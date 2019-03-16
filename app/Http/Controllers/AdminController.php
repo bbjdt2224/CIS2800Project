@@ -100,9 +100,52 @@ class AdminController extends Controller
         return redirect('admin/employees');
     }
 
-    public function archiveEmployee(){
+    public function archiveEmployee() {
         $id = request('employeeId');
         User::find($id)->delete();
         return redirect('admin/employees');
+    }
+
+    public function viewArchivedTimesheets() {
+        $type = request('type');
+        $value = request('value');
+
+        $date = date('W', time());
+
+        if ($type == null) { 
+            $type = 'Date'; 
+        }
+        if ($type == 'Date') {
+            if ($value !== null) {
+                $date = date('W', strtotime($value));
+            }
+            if($date%2 != 1){
+                $date = $date -1;
+            }
+            $value = date('Y-m-d', strtotime(date('Y')."W".sprintf("%02d", $date)."1"));
+        }
+
+        $timesheets = null;
+
+        switch ($type) {
+            case 'Date':
+                $timesheets = Timesheet::where('organizationId', '=', Auth::user()->organizationId)
+                ->where('startDate', 'like', $value)
+                ->join('users', 'timesheets.userId', '=', 'users.id')
+                ->orderby('name', 'ASC')
+                ->get();
+                break;
+            case 'Name':
+                $timesheets = Timesheet::where('organizationId', '=', Auth::user()->organizationId)
+                ->where('name', '=', $value)
+                ->join('users', 'timesheets.userId', '=', 'users.id')
+                ->orderby('startDate', 'DESC')
+                ->get();
+                break;
+        }
+        
+        $users = User::where('organizationId', '=', Auth::user()->organizationId)->get();
+
+        return view('admin.archived-timesheets', compact('type', 'value', 'timesheets', 'users'));
     }
 }

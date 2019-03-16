@@ -63,7 +63,10 @@
     ?>
     <div class="container-fluid" id="printPage">
         <div class="timesheet-buttons">
-            <a href="{{route('adminHome')}}" class="btn btn-primary" id="backButton">Employees</a>
+            <a href="{{URL::previous()}}" class="btn btn-primary" id="backButton">
+                <span class="glyphicon glyphicon-menu-left"></span>
+                Back
+            </a>
             <div id="buttons">
                 @if($timesheet->status == 'submitted')
                     <button class="btn btn-success width-margin-1" onclick="document.getElementById('approveForm').submit()">Approve</button>

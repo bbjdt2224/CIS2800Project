@@ -13,7 +13,7 @@
         <ul class="nav nav-tabs">
             <li><a href="{{route('adminHome')}}">Current Timesheets</a></li>
             <li class="active"><a href="#">Employees</a></li>
-            <li><a href="#">Archived Timesheets</a></li>
+            <li><a href="{{route('archivedTimesheets')}}">Archived Timesheets</a></li>
             <li><a href="#">Archived Employees</a></li>
         </ul>
         <ul class="list-group bottom-margin-10">

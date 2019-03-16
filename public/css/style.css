@@ -34,3 +34,11 @@
   align-items: center;
 }
 
+.min-width-300 {
+  min-width: 300px;
+}
+
+.width-400 {
+  width: 400px;
+}
+

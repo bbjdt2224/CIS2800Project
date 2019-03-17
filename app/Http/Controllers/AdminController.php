@@ -97,7 +97,45 @@ class AdminController extends Controller
             'name' => request('name'),
             'email' => request('email')
         ]);
+
+        $ids = request('headerId');
+        $headers = request('headers');
+
+        for($i = 0; $i < sizeof($ids); $i++) {
+            Header::where('id', '=', $ids[$i])->update([
+                'header'=>$headers[$i]
+            ]);
+        }
+
+        for($i = sizeof($ids); $i < sizeof($headers); $i++) {
+            Header::create([
+                'header'=>$headers[$i],
+                'userId'=>$id
+            ]);
+        }
+
         return redirect('admin/employees');
+    }
+
+    public function createEmployee() {
+        $newUser = User::create([
+            "name"=>request('name'),
+            "email"=>request('email'),
+            "password"=> '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
+            "organizationId"=>Auth::user()->organizationId,
+            "role"=>"employee"
+        ]);
+
+        $headers = request('headers');
+
+        for($i = 0; $i < sizeof($headers); $i++) {
+            Header::create([
+                'header'=>$headers[$i],
+                'userId'=>$newUser->id
+            ]);
+        }
+
+        return back();
     }
 
     public function archiveEmployee() {
@@ -158,5 +196,17 @@ class AdminController extends Controller
     function viewArchivedEmployees() {
         $users = User::onlyTrashed()->where('organizationId', '=', Auth::user()->organizationId)->get();
         return view('admin.archived-employees', compact('users'));
+    }
+
+    function getHeaders() {
+        $id = request('id');
+        $headers = Header::where('userId', '=', $id)->get();
+        return $headers;
+    }
+
+    function removeHeader() {
+        $id = request('id');
+        Header::find($id)->delete();
+        return back();
     }
 }

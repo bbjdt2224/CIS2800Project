@@ -37,6 +37,12 @@ Route::post('admin/archiveEmployee', 'AdminController@archiveEmployee')->name('a
 
 Route::post('admin/unarchiveEmployee', 'AdminController@unarchiveEmployee')->name('unarchiveEmployee');
 
+Route::post('admin/createEmployee', 'AdminController@createEmployee')->name('createEmployee');
+
+Route::post('admin/getHeaders', 'AdminController@getHeaders')->name('getHeaders');
+
+Route::post('admin/removeHeader', 'AdminController@removeHeader')->name('removeHeader');
+
 Route::get('admin/archivedTimesheets', 'AdminController@viewArchivedTimesheets')->name('archivedTimesheets');
 
 Route::get('admin/archivedEmployees', 'AdminController@viewArchivedEmployees')->name('archivedEmployees');

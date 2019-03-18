@@ -20,6 +20,10 @@ class Admin
             return redirect('employee/home');
         }
 
+        if(Auth::user()->role == 'superadmin'){
+            return redirect('superadmin/home');
+        }
+
         return $next($request);
     }
 }

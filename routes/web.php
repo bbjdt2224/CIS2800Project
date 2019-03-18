@@ -47,6 +47,14 @@ Route::get('admin/archivedTimesheets', 'AdminController@viewArchivedTimesheets')
 
 Route::get('admin/archivedEmployees', 'AdminController@viewArchivedEmployees')->name('archivedEmployees');
 
+Route::get('superadmin/home', 'SuperAdminController@home')->name('superadminHome');
+
+Route::post('superadmin/createOrganization', 'SuperAdminController@createOrganization')->name('createOrganization');
+
+Route::post('superadmin/editOrganization', 'SuperAdminController@editOrganization')->name('editOrganization');
+
+Route::post('superadmin/archiveOrganization', 'SuperAdminController@archiveOrganization')->name('archiveOrganization');
+
 Route::get('/login', 'AuthenticationController@login')->name('login');
 
 Auth::routes();

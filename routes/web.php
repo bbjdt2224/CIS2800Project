@@ -2,7 +2,7 @@
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('login');
 })->name('welcome');
 
 Route::get('/employee/home', 'UserController@employeeHome')->name('employeeHome');
@@ -54,6 +54,10 @@ Route::post('superadmin/createOrganization', 'SuperAdminController@createOrganiz
 Route::post('superadmin/editOrganization', 'SuperAdminController@editOrganization')->name('editOrganization');
 
 Route::post('superadmin/archiveOrganization', 'SuperAdminController@archiveOrganization')->name('archiveOrganization');
+
+Route::get('superadmin/allUsers', 'SuperAdminController@allUsers')->name('allUsers');
+
+Route::post('superadmin/editUser', 'SuperAdminController@editUser')->name('editUser');
 
 Route::get('/login', 'AuthenticationController@login')->name('login');
 

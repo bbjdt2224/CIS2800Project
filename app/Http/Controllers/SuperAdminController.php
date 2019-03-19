@@ -68,4 +68,24 @@ class SuperAdminController extends Controller
         $admin->delete();
         return back();
     }
+
+    public function allUsers() {
+        $users = User::where('role', '<>', 'superadmin')
+        ->select('users.id', 'name', 'email', 'role', 'title')
+        ->orderby('name', 'ASC')
+        ->join('organizations', 'organizations.id', '=', 'users.organizationId')
+        ->get();
+
+        return view('super-admin.all-users', compact('users'));
+    }
+
+    public function editUser() {
+        $id = request('userId');
+        User::find($id)->update([
+            'name' => request('name'),
+            'email' => request('email')
+        ]);
+
+        return back();
+    }
 }

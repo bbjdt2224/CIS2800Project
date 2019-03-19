@@ -114,7 +114,7 @@ class AdminController extends Controller
             ]);
         }
 
-        return redirect('admin/employees');
+        return back();
     }
 
     public function createEmployee() {

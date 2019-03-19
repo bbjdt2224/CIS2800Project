@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+    <div class="container">
         <div class="space-between bottom-margin-1">
-            <span></span>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#">Organizations</a></li>
+                <li><a href="{{route('allUsers')}}">All Users</a></li>
+            </ul>
             <button class="btn btn-success" data-toggle="modal" data-target="#new-organization">New Organization</button>
             <div id="new-organization" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -40,10 +43,10 @@
             @for($i = 0; $i < count($admins); $i ++)
                 <li class="list-group-item space-between">
                     <button class="min-width-300 btn btn-link left" data-toggle="modal" data-target="#edit{{$i}}" onclick="loadHeaders({{$admins[$i]->id}})">
-                        {{$admins[$i]->name}}
+                        {{$admins[$i]->title}}
                     </button>
+                    <span class="width-400">{{$admins[$i]->name}}</span>
                     <span class="width-400">{{$admins[$i]->email}}</span>
-                    <span class="width-400">{{$admins[$i]->title}}</span>
                     <span class="width-400">{{$admins[$i]->members}} Members</span>
                     <button class="btn btn-danger" onclick="document.getElementById('archive{{$i}}').submit();">Archive</button>
                 </li>

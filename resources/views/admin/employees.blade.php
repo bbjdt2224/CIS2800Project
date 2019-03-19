@@ -58,7 +58,7 @@
                             <form method="post" action="{{route('employeeEdit')}}">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title">Eidt Employee</h4>
+                                    <h4 class="modal-title">Edit Employee</h4>
                                 </div>
                                 <div class="modal-body left">
                                     {{ csrf_field()}}
@@ -80,7 +80,7 @@
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-success right-margin-1">Save</button>
                                     <button type="button" class="btn btn-primary right-margin-1">Change Password</button>
-                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('archive').submit();">Archive</button>
+                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('archive{{$i}}').submit();">Archive</button>
                                 </div>
                             </form>
                         </div>

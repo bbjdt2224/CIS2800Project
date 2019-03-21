@@ -78,17 +78,11 @@ class AdminController extends Controller
 
     public function employees() {
         $employees = User::where('organizationId', '=', Auth::user()->organizationId)
+        ->where('role', '=', 'employee')
         ->orderby('name')
         ->get();
 
         return view('admin.employees', compact('employees'));
-    }
-
-    public function editEmployee($employeeId) {
-        $employeeId = intval($employeeId);
-        $employee = User::find($employeeId);
-
-        return view('admin.edit-employee', compact('employee'));
     }
 
     public function edit() {
@@ -123,7 +117,8 @@ class AdminController extends Controller
             "email"=>request('email'),
             "password"=> '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
             "organizationId"=>Auth::user()->organizationId,
-            "role"=>"employee"
+            "role"=>"employee",
+            "password_token"=>\str_random(100)
         ]);
 
         $headers = request('headers');

@@ -5,6 +5,16 @@ Route::get('/', function () {
     return redirect('login');
 })->name('welcome');
 
+Route::get('/login', 'AuthenticationController@login')->name('login');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/changePassword/{token}', 'AuthenticationController@changePassword');
+
+Route::post('/updatePassword', 'AuthenticationController@updatePassword')->name('updatePassword');
+
 Route::get('/employee/home', 'UserController@employeeHome')->name('employeeHome');
 
 Route::post('/employee/new-shift', 'UserController@createShift')->name('newShift');
@@ -28,8 +38,6 @@ Route::post('admin/timesheet/approve', 'AdminController@approveTimesheet')->name
 Route::post('admin/timesheet/reject', 'AdminController@rejectTimesheet')->name('rejectTimesheet');
 
 Route::get('admin/employees', 'AdminController@employees')->name('employees');
-
-Route::get('admin/editEmployee/{employeeId}', 'AdminController@editEmployee')->name('editEmployee');
 
 Route::post('admin/editEmployee', 'AdminController@edit')->name('employeeEdit');
 
@@ -59,9 +67,4 @@ Route::get('superadmin/allUsers', 'SuperAdminController@allUsers')->name('allUse
 
 Route::post('superadmin/editUser', 'SuperAdminController@editUser')->name('editUser');
 
-Route::get('/login', 'AuthenticationController@login')->name('login');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 

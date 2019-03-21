@@ -38,7 +38,8 @@ class SuperAdminController extends Controller
             'email'=>request('email'),
             'password'=>'$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm',
             'organizationId'=>$org->id,
-            'role'=>'admin'
+            'role'=>'admin',
+            'password_token'=>\str_random(100)
         ]);
         return back();
     }

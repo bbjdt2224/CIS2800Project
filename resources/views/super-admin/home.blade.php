@@ -41,6 +41,9 @@
         </div>
         <ul class="list-group bottom-margin-10">
             @for($i = 0; $i < count($admins); $i ++)
+                <?php
+                    $message = "Your admin has requested a password change for you account. Click on the following link to change your password%0D%0A%0D%0Ahttp://localhost/2800/Project/public/changePassword/".$admins[$i]->password_token.'%0D%0A%0D%0A WMU Timesheets';
+                ?>
                 <li class="list-group-item space-between">
                     <button class="min-width-300 btn btn-link left" data-toggle="modal" data-target="#edit{{$i}}" onclick="loadHeaders({{$admins[$i]->id}})">
                         {{$admins[$i]->title}}
@@ -77,7 +80,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-success right-margin-1">Save</button>
-                                    <button type="button" class="btn btn-primary right-margin-1">Change Password</button>
+                                    <a href="mailto:{{$admins[$i]->email}}?subject=Change Password&body={{$message}}" class="btn btn-primary right-margin-1">Change Password</a>
                                     <button type="button" class="btn btn-danger" onclick="document.getElementById('archive').submit();">Archive</button>
                                 </div>
                             </form>

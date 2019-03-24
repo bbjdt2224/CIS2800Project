@@ -65,6 +65,8 @@ Route::post('superadmin/archiveOrganization', 'SuperAdminController@archiveOrgan
 
 Route::get('superadmin/allUsers', 'SuperAdminController@allUsers')->name('allUsers');
 
+Route::post('superadmin/searchUsers', 'SuperAdminController@searchUsers')->name('searchUsers');
+
 Route::post('superadmin/editUser', 'SuperAdminController@editUser')->name('editUser');
 
 

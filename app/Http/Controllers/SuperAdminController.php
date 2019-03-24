@@ -80,6 +80,17 @@ class SuperAdminController extends Controller
         return view('super-admin.all-users', compact('users'));
     }
 
+    public function searchUsers() {
+        $val = request('val');
+        $users = User::where('role', '<>', 'superadmin')
+        ->where('name', 'like', '%'.$val.'%')
+        ->select('users.id')
+        ->orderby('name', 'ASC')
+        ->join('organizations', 'organizations.id', '=', 'users.organizationId')
+        ->get();
+        return $users;
+    }
+
     public function editUser() {
         $id = request('userId');
         User::find($id)->update([

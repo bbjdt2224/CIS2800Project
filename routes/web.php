@@ -69,4 +69,6 @@ Route::post('superadmin/searchUsers', 'SuperAdminController@searchUsers')->name(
 
 Route::post('superadmin/editUser', 'SuperAdminController@editUser')->name('editUser');
 
+Route::post('superadmin/archiveEmployee', 'SuperAdminController@archiveEmployee')->name('saArchiveEmployee');
+
 

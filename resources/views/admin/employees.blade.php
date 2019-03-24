@@ -65,6 +65,7 @@
                                 </div>
                                 <div class="modal-body left">
                                     {{ csrf_field()}}
+                                    <input type="hidden" name="employeeId" value="{{$employees[$i]->id}}">
                                     <div class="form-group">
                                         <label>Name:</label>
                                         <input type="text" class="form-control" name="name" value="{{$employees[$i]->name}}">
@@ -77,7 +78,7 @@
                                         <span>Timesheet Headers</span>
                                         <button type="button" class="btn btn-success" onclick="addHeader({{$employees[$i]->id}})"><span class="glyphicon glyphicon-plus"></span></button>
                                     </div>
-                                    <div id="headers{{$employees[$i]->id}}">
+                                        <div id="headers{{$employees[$i]->id}}">
                                     </div>
                                 </div>
                                 <div class="modal-footer">

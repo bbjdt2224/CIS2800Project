@@ -28,14 +28,16 @@ class AdminController extends Controller
 
         $users = User::leftJoin('timesheets', 'users.latestTimesheetId', '=', 'timesheets.id')
         ->where('users.organizationId', '=', Auth::user()->organizationId)
+        ->where('users.role', '=', 'employee')
         ->orderby('users.name')
-        ->groupBy('timesheets.userId')
         ->get();
         
         return view('admin.home', compact('users'));
     }
 
     public function viewTimesheet($id) {
+
+        $back = request('back');
 
         $date = date('W', time());
         if($date%2 != 1){
@@ -57,7 +59,7 @@ class AdminController extends Controller
         ->orderby('users.name')
         ->get();
 
-        return view('admin.timesheet', compact('user', 'headers', 'timesheet', 'shifts', 'userList'));
+        return view('admin.timesheet', compact('user', 'headers', 'timesheet', 'shifts', 'userList', 'back'));
     }
 
     public function approveTimesheet() {
@@ -95,18 +97,32 @@ class AdminController extends Controller
         $ids = request('headerId');
         $headers = request('headers');
 
-        for($i = 0; $i < sizeof($ids); $i++) {
-            Header::where('id', '=', $ids[$i])->update([
-                'header'=>$headers[$i]
-            ]);
+
+        if (isset($ids)) {
+            for($i = 0; $i < sizeof($ids); $i++) {
+                Header::where('id', '=', $ids[$i])->update([
+                    'header'=>$headers[$i]
+                ]);
+            }
+    
+            if (isset($headers)) {
+                for($i = sizeof($ids); $i < sizeof($headers); $i++) {
+                    Header::create([
+                        'header'=>$headers[$i],
+                        'userId'=>$id
+                    ]);
+                }
+            }
+        }
+        else if (isset($headers)) {
+            for($i = 0; $i < sizeof($headers); $i++) {
+                Header::create([
+                    'header'=>$headers[$i],
+                    'userId'=>$id
+                ]);
+            }
         }
 
-        for($i = sizeof($ids); $i < sizeof($headers); $i++) {
-            Header::create([
-                'header'=>$headers[$i],
-                'userId'=>$id
-            ]);
-        }
 
         return back();
     }
@@ -123,11 +139,13 @@ class AdminController extends Controller
 
         $headers = request('headers');
 
-        for($i = 0; $i < sizeof($headers); $i++) {
-            Header::create([
-                'header'=>$headers[$i],
-                'userId'=>$newUser->id
-            ]);
+        if(isset($headers)) {
+            for($i = 0; $i < sizeof($headers); $i++) {
+                Header::create([
+                    'header'=>$headers[$i],
+                    'userId'=>$newUser->id
+                ]);
+            }
         }
 
         return back();

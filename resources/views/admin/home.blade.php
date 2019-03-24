@@ -29,10 +29,10 @@
                         <td>{{$u->name}}</td>
                         @if($u->startDate == $date)
                             <td class="center">{{$u->total}}</td>
-                            <td class="center"><a class="btn btn-primary" href="{{route('viewTimesheet', ['timesheetId' => $u->id])}}">View</a></td>
+                            <td class="center"><a class="btn btn-primary" href="{{route('viewTimesheet', ['timesheetId' => $u->id, 'back'=>url()->full()])}}">View</a></td>
                         @else
                             <td class="center">-</td>
-                            <td class="center"><a class="btn btn-primary disabled" href="{{route('viewTimesheet', ['timesheetId' => $u->id])}}">View</a></td>
+                            <td class="center"><a class="btn btn-primary disabled">View</a></td>
                         @endif
                         <td>
                             @if($u->startDate == $date)

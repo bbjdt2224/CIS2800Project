@@ -52,7 +52,7 @@
         <ul class="list-group top-margin-1 bottom-margin-10">
             @for($i = 0; $i < count($timesheets); $i ++)
                 <li class="list-group-item">
-                    <a href="{{route('viewTimesheet', ['timesheetId' => $timesheets[$i]->id])}}" class="space-between">
+                    <a href="{{route('viewTimesheet', ['timesheetId' => $timesheets[$i]->id, 'back'=>url()->full()])}}" class="space-between">
                         <span>{{$timesheets[$i]->name}}</span>
                         <span>{{formatDate($timesheets[$i]->startDate)}}</span>
                     </a>

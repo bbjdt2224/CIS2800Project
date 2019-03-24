@@ -63,7 +63,7 @@
     ?>
     <div class="container-fluid" id="printPage">
         <div class="timesheet-buttons">
-            <a href="{{URL::previous()}}" class="btn btn-primary" id="backButton">
+            <a href="{{$back}}" class="btn btn-primary" id="backButton">
                 <span class="glyphicon glyphicon-menu-left"></span>
                 Back
             </a>
@@ -78,7 +78,7 @@
                 @else
                     <span class="text-warning"><span class="glyphicon glyphicon-refresh"></span>  In Progress</span>
                 @endif
-                <a href="{{route('viewTimesheet', ['timesheetId' => $timesheet->id])}}" class="btn btn-primary width-margin-1" onclick="removeButtons(); window.print();" >Print</a>
+                <a href="{{route('viewTimesheet', ['timesheetId' => $timesheet->id, 'back'=>$back])}}" class="btn btn-primary width-margin-1" onclick="removeButtons(); window.print();" >Print</a>
             </div>
         </div>
         <div class="timesheet-headers">
@@ -196,6 +196,21 @@
             <img width="300px" height="75px" src="{{$timesheet->signature}}">
         @else
            <h1>Unsubmitted</h1>
+        @endif
+        @if(strpos($back, 'home')>0)
+            <div class="center-page" id="quickNav">
+                @if($userIndex > 1)
+                    <a href="{{route('viewTimesheet', ['timesheetId' => $userList[$userIndex-2], 'back'=>$back])}}" class="btn btn-primary">Prev</a>
+                @else 
+                    <a class="btn btn-primary disabled">Prev</a>
+                @endif
+                <span class="width-padding-1">{{$userIndex}} of {{sizeof($userList)}}</span>
+                @if($userIndex < sizeof($userList))
+                    <a href="{{route('viewTimesheet', ['timesheetId' => $userList[$userIndex], 'back'=>$back])}}" class="btn btn-primary">Next</a>
+                @else
+                    <a class="btn btn-primary disabled">Next</a>
+                @endif
+            </div>
         @endif
     </div>
 

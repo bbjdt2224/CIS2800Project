@@ -39,7 +39,7 @@
         </div>
     </div>
 </div>
-<form method="post" action="{{route('archiveEmployee')}}" id="archive{{$i}}">
+<form method="post" action="{{route('saArchiveEmployee')}}" id="archive{{$i}}">
     {{ csrf_field()}}
     <input type="hidden" name="employeeId" value="{{$user->id}}">
 </form>

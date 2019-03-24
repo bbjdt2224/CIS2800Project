@@ -42,7 +42,7 @@
                 $date = $date -1;
             }
             $date = date('Y-m-d', strtotime(date('Y')."W".sprintf("%02d", $date)."1"));
-            if($timesheet->status == 'progress' && $date == $timesheet->startDate) {
+            if(($timesheet->status == 'progress' || $timesheet->status == 'rejected') && $date == $timesheet->startDate) {
                 return true;
             }
             return false;
@@ -59,11 +59,32 @@
                     <button type="submit" class="btn btn-success">Change Date</button>
                 </form>
                 @if(isEditable($timesheet))
-                    <form method="post" action="{{route('sign')}}">
-                        {{ csrf_field()}}
-                        <input type="hidden" value="{{$timesheet->id}}" name="timesheetId">
-                        <button type="submit" class="btn btn-success">Submit</button>
-                    </form>
+                    <div class="center-page">
+                        @if($timesheet->status == 'rejected')
+                            <button type="button" class="btn btn-danger right-margin-1" data-toggle="modal" data-target="#rejection">Rejection Info</button>
+                            <div id="rejection" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Rejection Notes</h4>
+                                        </div>
+                                        <div class="modal-body left">
+                                            {{$timesheet->notes}}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                        <form method="post" action="{{route('sign')}}">
+                            {{ csrf_field()}}
+                            <input type="hidden" value="{{$timesheet->id}}" name="timesheetId">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </form>
+                    </div>
                 @endif
             </div>
             <table class="table">

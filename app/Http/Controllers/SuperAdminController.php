@@ -62,11 +62,10 @@ class SuperAdminController extends Controller
     public function archiveOrganization() {
         $id = request('employeeId');
         $admin = User::find($id);
-        $employees = User::where('organizationId', '=', $admin->organizationId);
+        $employees = User::where('organizationId', '=', $admin->organizationId)->get();
         for($i = 0; $i < sizeof($employees); $i++) {
-            User::find($employees[$i])->delete();
+            User::find($employees[$i]->id)->delete();
         }
-        $admin->delete();
         return back();
     }
 
@@ -98,6 +97,12 @@ class SuperAdminController extends Controller
             'email' => request('email')
         ]);
 
+        return back();
+    }
+
+    public function archiveEmployee() {
+        $id = request('employeeId');
+        User::find($id)->delete();
         return back();
     }
 }

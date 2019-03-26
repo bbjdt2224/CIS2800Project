@@ -2,7 +2,7 @@
 Our CIS 2800 semester project
 Justin True, Daniel Desnoyer, Mathew Schutz and Richard Schafer
 
-##Setup
+## Setup
 This project uses laravel https://laravel.com/docs/5.8/installation
 
 Laravel uses the Model View Controller style.
@@ -24,19 +24,19 @@ DB_USERNAME=uname
 DB_PASSWORD=password 
 ```
 
-##Running
+## Running
 Make sure your apache server and mysql are running
 
 Open this file in your localhost and open the public folder
 
-##Database
+## Database
 
 To generate the database structure run ```php artisan migrate```
 To get test data run ```php artisan db:seed```
 
 All users are generated with the password: "secret"
 
-##Files
+## Files
 The controllers are located at ```app/Http/Controllers```
 Models are in ```app``` folder
 Views are located at ```resources/views```

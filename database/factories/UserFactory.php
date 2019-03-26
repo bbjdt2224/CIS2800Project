@@ -14,6 +14,7 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\User::class, function (Faker $faker) {
+    static $timesheet = 1;
     return [
         'name' => $faker->name,
         'email' => $faker->unique()->safeEmail,
@@ -23,6 +24,6 @@ $factory->define(App\User::class, function (Faker $faker) {
         'role' => 'employee',
         'organizationId' => $faker->randomElement($array = array ('1', '2', '3', '4', '5')),
         'remember_token' => str_random(10),
-        'latestTimesheetId' => $faker->randomDigitNotNull,
+        'latestTimesheetId' => $timesheet++,
     ];
 });

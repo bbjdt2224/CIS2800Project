@@ -18,6 +18,7 @@ class SuperAdminController extends Controller
         $this->middleware('superadmin');
     }
 
+    // get all admins and thier organization
     public function home() {
         $admins = User::where('role', '=', 'admin')
         ->select('users.id', 'organizationId', 'name', 'email', 'title', 'members')
@@ -28,6 +29,7 @@ class SuperAdminController extends Controller
         return view('super-admin.home', compact('admins'));
     }
 
+    // make a new organization and admin
     public function createOrganization() {
         $org = Organization::create([
             'title'=>request('orgName')
@@ -44,6 +46,7 @@ class SuperAdminController extends Controller
         return back();
     }
 
+    // edit organization or admin information
     public function editOrganization() {
         $userId = request('userId');
         $orgId = request('orgId');
@@ -59,6 +62,7 @@ class SuperAdminController extends Controller
         return back();
     }
 
+    // archive organization
     public function archiveOrganization() {
         $id = request('employeeId');
         $admin = User::find($id);
@@ -69,6 +73,7 @@ class SuperAdminController extends Controller
         return back();
     }
 
+    // get all users in database
     public function allUsers() {
         $users = User::where('role', '<>', 'superadmin')
         ->select('users.id', 'name', 'email', 'role', 'title')
@@ -79,6 +84,7 @@ class SuperAdminController extends Controller
         return view('super-admin.all-users', compact('users'));
     }
 
+    // search for a user by name
     public function searchUsers() {
         $val = request('val');
         $users = User::where('role', '<>', 'superadmin')
@@ -90,6 +96,7 @@ class SuperAdminController extends Controller
         return $users;
     }
 
+    // edit a users information
     public function editUser() {
         $id = request('userId');
         User::find($id)->update([
@@ -100,6 +107,7 @@ class SuperAdminController extends Controller
         return back();
     }
 
+    // archive a user
     public function archiveEmployee() {
         $id = request('employeeId');
         User::find($id)->delete();

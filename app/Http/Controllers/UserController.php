@@ -18,6 +18,7 @@ class UserController extends Controller
         // $this->middleware('admin');
     }
 
+    // get the most recent timesheet
     public function employeeHome() {
         
         $date = date('W', time());
@@ -44,6 +45,7 @@ class UserController extends Controller
         return view('employee.home', compact('timesheet'));
     }
 
+    // get a past timesheet
     public function pastTimesheet() {
 
         if (null == request('date')){
@@ -65,6 +67,7 @@ class UserController extends Controller
         return view('employee.home', compact('date', 'timesheet'));
     }
 
+    // make a new shift
     public function createShift(){
         $diff = strtotime(request('shiftEnd')) - strtotime(request('shiftStart'));
         $hours = date('g', $diff);
@@ -88,6 +91,7 @@ class UserController extends Controller
         return back();
     }
 
+    // edit a shift
     public function editShift(){
         $id = request('shiftId');
         $start = request('shiftStart');
@@ -105,6 +109,7 @@ class UserController extends Controller
         return back();
     }
 
+    // delete a shift
     public function deleteShift(){
         $id = request('shiftId');
         $shift = Shift::find($id);
@@ -115,11 +120,13 @@ class UserController extends Controller
         return back();
     }
 
+    // redirect to the signature page
     public function sign(){
         $timesheetId = request('timesheetId');
         return view('employee.signature', compact('timesheetId'));
     }
 
+    // submit a timesheet
     public function submitTimesheet() {
         $timesheetId = request('timesheetId');
         $signature = request('signature');

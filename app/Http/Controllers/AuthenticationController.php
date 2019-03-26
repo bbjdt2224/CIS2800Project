@@ -13,6 +13,7 @@ class AuthenticationController extends Controller
         return view('authentication.login');
     }
 
+    // opens the change password page
     public function changePassword($token) {
         $user = User::where('password_token', '=', $token)->first();
         if (isset($user)) {
@@ -21,6 +22,7 @@ class AuthenticationController extends Controller
         return redirect('/login');
     }
 
+    // update users password
     public function updatePassword() {
         $token = request('password-token');
         $email = request('email');

@@ -18,6 +18,7 @@ class AdminController extends Controller
         $this->middleware('admin');
     }
 
+    // gets all the users in an organization and thier most recent timesheet
     public function adminHome() {
 
         $date = date('W', time());
@@ -35,6 +36,7 @@ class AdminController extends Controller
         return view('admin.home', compact('users'));
     }
 
+    // gets a timesheet by id
     public function viewTimesheet($id) {
 
         $back = request('back');
@@ -62,12 +64,14 @@ class AdminController extends Controller
         return view('admin.timesheet', compact('user', 'headers', 'timesheet', 'shifts', 'userList', 'back'));
     }
 
+    // sets the timeseet status to approved
     public function approveTimesheet() {
         $id = request('timesheetId');
         Timesheet::find($id)->update(['status'=>'approved']);
         return back();
     }
 
+    // sets the timesheet status to rejected and sets the notes
     public function rejectTimesheet() {
         $id = request('timesheetId');
         $notes = request('notes');
@@ -78,6 +82,7 @@ class AdminController extends Controller
         return back();
     }
 
+    // get all employees in a organization
     public function employees() {
         $employees = User::where('organizationId', '=', Auth::user()->organizationId)
         ->where('role', '=', 'employee')
@@ -87,6 +92,7 @@ class AdminController extends Controller
         return view('admin.employees', compact('employees'));
     }
 
+    // edit a users information
     public function edit() {
         $id = request('employeeId');
         User::find($id)->update([
@@ -127,6 +133,7 @@ class AdminController extends Controller
         return back();
     }
 
+    // make a new employee
     public function createEmployee() {
         $newUser = User::create([
             "name"=>request('name'),
@@ -151,18 +158,21 @@ class AdminController extends Controller
         return back();
     }
 
+    // soft deletes an employee
     public function archiveEmployee() {
         $id = request('employeeId');
         User::find($id)->delete();
         return redirect('admin/employees');
     }
 
+    // brings an employee back from being archived
     public function unarchiveEmployee() {
         $id = request('employeeId');
         User::withTrashed()->find($id)->restore();
         return redirect('admin/archivedEmployees');
     }
 
+    // show all archived timesheets
     public function viewArchivedTimesheets() {
         $type = request('type');
         $value = request('value');
@@ -206,17 +216,20 @@ class AdminController extends Controller
         return view('admin.archived-timesheets', compact('type', 'value', 'timesheets', 'users'));
     }
 
+    // get all archived employees
     function viewArchivedEmployees() {
         $users = User::onlyTrashed()->where('organizationId', '=', Auth::user()->organizationId)->get();
         return view('admin.archived-employees', compact('users'));
     }
 
+    // get headers of an employee
     function getHeaders() {
         $id = request('id');
         $headers = Header::where('userId', '=', $id)->get();
         return $headers;
     }
 
+    // remove a header form an employee
     function removeHeader() {
         $id = request('id');
         Header::find($id)->delete();

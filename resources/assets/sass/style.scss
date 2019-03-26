@@ -44,4 +44,44 @@
 
 .hidden {
     display: none
-  }
+}
+
+.navbar{
+    background-color: 	#442416;
+}
+
+.btn-primary {
+    background-color: #fcc30f;
+    color: 	#442416;
+    border-color: white;
+    &:hover, &:active, &:focus, &:active:focus {
+        background-color: #CEAD00;
+        color: 	#442416;
+        border-color: white;
+    }
+}
+
+.btn-info {
+    background-color: #FFD700;
+    color: 	#442416;
+    border-color: white;
+    &:hover, &:active, &:focus, &:active:focus {
+        background-color: #fcc30f;
+        color: 	#442416;
+        border-color: white;
+    }
+}
+
+a, .btn-link{
+    color: #B29600;
+    &:hover, &:active, &:focus {
+        color: #A08700;
+    }
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-nav > li > a {
+    color: white;
+    &:hover {
+        color: #CEAD00;
+    }
+}
